@@ -1,5 +1,5 @@
-from .utils import save_csv
-from .settings import OUTPUT_CSV
+from utils import save_csv
+from settings import OUTPUT_CSV
 
 PROMPT = """
 You are the Planner of the Competitive Intelligence Radar.

@@ -1,11 +1,13 @@
-from smolagents import InferenceClientModel
-from .settings import (
+from smolagents import InferenceClientModel, OpenAIServerModel
+from settings import (
     PROVIDER, OPENAI_API_KEY, HF_API_TOKEN, MODEL_ID,
     OPENROUTER_API_KEY, OPENROUTER_MODEL, OPENROUTER_BASE_URL,
     OPENROUTER_SITE, OPENROUTER_APP_NAME,
 )
 
 def get_model():
+    print('Running using as provider:',PROVIDER)
+
     if PROVIDER == "openai":
         return InferenceClientModel(
             provider="openai",
@@ -19,15 +21,9 @@ def get_model():
             api_key=HF_API_TOKEN,
         )
     if PROVIDER == "openrouter":
-        return InferenceClientModel(
-            provider="openai",
-            model=OPENROUTER_MODEL,
+        return OpenAIServerModel(
+            model_id=OPENROUTER_MODEL,
             api_key=OPENROUTER_API_KEY,
-            api_base=OPENROUTER_BASE_URL,
-            extra_headers={
-                # estes headers são recomendados pelo OpenRouter
-                "HTTP-Referer": OPENROUTER_SITE,
-                "X-Title": OPENROUTER_APP_NAME,
-            },
+            api_base=OPENROUTER_BASE_URL
         )
     raise ValueError(f"Unsupported PROVIDER={PROVIDER}")
