@@ -5,6 +5,13 @@ It enables an AI agent to automatically monitor competitor information on the we
 
 ---
 
+## ⭐ Support the Project
+
+If you find this project useful, please consider giving it a **star** on GitHub.  
+It helps increase visibility and motivates further improvements.
+
+---
+
 ## 📂 Project Structure
 
 - **README.md** — Documentation and usage instructions  
