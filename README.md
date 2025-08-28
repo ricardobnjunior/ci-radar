@@ -1,25 +1,10 @@
-# CI Radar (Competitive Intelligence Radar)
+# CI Radar (Competitive Intelligence)
 
-Multi-agent system (LangChain + LangGraph) to monitor competitors/market:
-**Planner → Browser → Analyst**.  
-Uses only one API key (OpenAI). Search/reading uses DuckDuckGo + requests+BS4 (no keys).
-
-## Features
-- PlannerAgent: 3–7 sub-queries + relevance criteria
-- BrowserAgent: DuckDuckGo search, HTML fetch, robots.txt, retries, caching, rate limit
-- AnalystAgent: action-oriented bullets + cross-citations (bullet → url :: excerpt)
-- Orchestration: LangGraph (`plan → browse → analyze`, auto re-browse if coverage low)
-- Output: JSON with subtasks, sources, bullets, citations, errors
+Monitora páginas públicas (pricing, release notes, blog) com um agente smolagents e salva resultados em CSV.
 
 ## Setup
-``` 
+```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-# Edit .env and set OPENAI_API_KEY=sk-...
+cp .env.example .env  # edite provider, keys e MODEL_ID
 ```
-
-## Run
-
-```
-python src/ci_radar/main.py --query "electric-vehicle charging market trends 2025"
-```
-

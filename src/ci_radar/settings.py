@@ -1,48 +1,21 @@
-from __future__ import annotations
-import logging
-from pydantic import BaseSettings, Field, validator
-from typing import Literal, Optional
+import os
+from dotenv import load_dotenv
 
-DEFAULT_USER_AGENT = "CI-Radar/0.1 (+https://example.com/contact)"
+load_dotenv()
 
-class Settings(BaseSettings):
-    # LLM
-    model_provider = Field(default="openai", env="MODEL_PROVIDER")
-    openai_api_key = Field(default=None, env="OPENAI_API_KEY")
-    openai_model = Field(default="gpt-4o-mini", env="OPENAI_MODEL")
+PROVIDER = os.getenv("PROVIDER", "openai")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")
+MODEL_ID = os.getenv("MODEL_ID", "gpt-4o-mini")
 
-    # Search/crawl
-    search_top_k = Field(default=5, env="SEARCH_TOP_K")
-    max_pages_per_query = Field(default=3, env="MAX_PAGES_PER_QUERY")
-    max_total_pages = Field(default=10, env="MAX_TOTAL_PAGES")
-    http_timeout = Field(default=15, env="HTTP_TIMEOUT")
-    rate_limit_seconds = Field(default=1.0, env="RATE_LIMIT_SECONDS")
-    cache_ttl_seconds = Field(default=3600, env="CACHE_TTL_SECONDS")
-    enable_robots_txt: bool = Field(default=True, env="ENABLE_ROBOTS_TXT")
+# ---- OpenRouter ----
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openrouter/openai/gpt-4o-mini")
+OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+OPENROUTER_SITE = os.getenv("OPENROUTER_SITE", "")
+OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "ci-radar")
 
-    # Guards
-    user_agent = Field(default=DEFAULT_USER_AGENT, env="USER_AGENT")
-    allowed_domains = Field(default=None, env="ALLOWED_DOMAINS")
-    coverage_threshold = Field(default=0.6, env="COVERAGE_THRESHOLD")
-    max_browse_iterations = Field(default=2, env="MAX_BROWSE_ITERATIONS")
-
-    # Logging
-    log_level = Field(default="INFO", env="LOG_LEVEL")
-
-    @validator("allowed_domains")
-    def normalize_domains(cls, v):
-        if v is None:
-            return None
-        cleaned = ",".join(sorted({d.strip().lower() for d in v.split(",") if d.strip()}))
-        return cleaned if cleaned else None
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-
-SETTINGS = Settings()
-logging.basicConfig(
-    level=getattr(logging, SETTINGS.log_level.upper(), logging.INFO),
-    format="%(asctime)s [%(levelname)s] %(message)s",
-)
-logger = logging.getLogger("ci_radar")
+# Crawling defaults
+HTTP_TIMEOUT = int(os.getenv("HTTP_TIMEOUT", "20"))
+USER_AGENT = os.getenv("USER_AGENT", "ci-radar/0.1 (+https://example.com)")
+OUTPUT_CSV = os.getenv("OUTPUT_CSV", "ci_radar_output.csv")
