@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+HTTP_TIMEOUT = 10
+MAX_RETRIES = 1
 PROVIDER = os.getenv("PROVIDER", "openai")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")
